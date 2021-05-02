@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>Shuffle Adding and Removing Elements Demo</title>
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="Shuffle Adding and Removing Elements Demo">
+  <meta property="og:description" content="This demo of shuffle shows how to add and removing items.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://vestride.github.io/Shuffle/adding-removing">
+  <meta property="og:image" content="https://vestride.github.io/Shuffle/demos/adding-removing.jpg">
+  <meta property="og:site_name" content="">
+  <meta property="fb:admins" content="771347349">
+  <meta name="author" content="Glen Cheney">
+  <meta name="description" content="This demo of shuffle shows how to add and removing items.">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:creator" content="@Vestride">
+  <meta name="twitter:title" content="Shuffle Adding and Removing Elements Demo">
+  <meta name="twitter:description" content="This demo of shuffle shows how to add and removing items.">
+  <meta name="twitter:image" content="https://vestride.github.io/Shuffle/demos/adding-removing.jpg">
+
+  <link href="https://plus.google.com/u/0/100210640453700033824" rel="author">
+
+
+  <link id="favicon" rel="icon" type="image/png" href="https://vestride.github.io/Shuffle/favicon.png">
+
+  <script>window.location.host.indexOf("github.io")>-1&&"https:"!=window.location.protocol&&(window.location.protocol="https:");</script>
+
+  <!-- Prefetch DNS for external assets -->
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com/">
+  <link rel="dns-prefetch" href="https://www.google-analytics.com/">
+  <link rel="dns-prefetch" href="https://unpkg.com/">
+
+  <link rel="stylesheet" href="shufflebase_files/prism.css">
+  <link rel="stylesheet" href="shufflebase_files/normalize.css">
+  <link rel="stylesheet" href="shufflebase_files/style.css">
+  <link rel="stylesheet" href="shufflebase_files/shuffle-styles.css">
+  <link rel="stylesheet" href="shufflebase_files/css.css">
+  
+  
+  <script>window.site_url = "/Shuffle";</script>
+</head>
+<body class="">
+
+<main role="main" id="main">
+  <style>
+
+  /* Styles for shuffle */
+  .container {
+    counter-reset: boxes;
+  }
+
+  .box {
+    position: relative;
+    width: 18%;
+    margin-left: 2.5%;
+    height: 100px;
+    margin-top: 20px;
+    float: left;
+    background: #E74C3C;
+    counter-increment: boxes;
+  }
+
+  .box::before {
+    content: 'DOM: ' counter(boxes);
+    position: absolute;
+    color: white;
+    top: .5em;
+    left: .5em;
+  }
+
+
+  .box::after {
+    content: 'Reviews: ' attr(data-reviews);
+    position: absolute;
+    color: white;
+    bottom: .5em;
+    left: .5em;
+  }
+
+  @media (min-width: 1024px) {
+    .box::before {
+      content: 'DOM order: ' counter(boxes);
+    }
+
+    .box::after {
+      content: 'Total Reviews: ' attr(data-reviews);
+    }
+  }
+
+  .box.shuffle-item,
+  .box:first-child {
+    margin-left: 0;
+  }
+
+  .w2 {
+    width: 38.5%;
+  }
+
+  .w3 {
+    width: 59%;
+  }
+
+  .h2 {
+    height: 220px;
+  }
+</style>
+
+<section class="container">
+  <div class="row">
+    <div class="col-12@sm">
+      <h2>Adding and Removing Items</h2>
+      <p>When you add elements to the Shuffle container, notify the Shuffle instance with the <code>add</code> method. You must add the elements to the DOM yourself. This lets you control the default (DOM) sort order.</p>
+      <p>When you want to remove item(s), use <code>remove</code>. This will fade out the item(s) then remove it from the DOM.</p>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="row">
+    <div class="col-12@sm">
+
+      <fieldset class="filters-group">
+        <legend class="filter-label">Sort</legend>
+        <div class="btn-group" id="sorter">
+          <label class="btn active">
+            <input type="radio" name="sort-value" value="dom" checked="checked"> DOM Order
+          </label>
+          <label class="btn">
+            <input type="radio" name="sort-value" value="most-reviews"> Most Reviews
+          </label>
+          <label class="btn">
+            <input type="radio" name="sort-value" value="least-reviews"> Least Reviews
+          </label>
+        </div>
+      </fieldset>
+
+      <br>
+      <fieldset class="filters-group">
+        <legend class="filter-label">Filter</legend>
+        <div class="btn-group" id="filterer">
+          <label class="btn">
+            <input type="radio" name="filter-value" value="none"> None
+          </label>
+          <label class="btn">
+            <input type="radio" name="filter-value" value="odd-reviews"> Odd number of reviews
+          </label>
+          <label class="btn active">
+            <input type="radio" name="filter-value" value="even-reviews"> Even number of reviews
+          </label>
+        </div>
+      </fieldset>
+
+      <div>
+        <br>
+        <p class="filter-label">Actions</p>
+        <div class="btn-group">
+          <button class="btn" id="prepend">Prepend 5 Boxes</button>
+          <button class="btn" id="append">Append 5 Boxes</button>
+          <button class="btn" id="remove">Remove Some Boxes</button>
+          <button class="btn" id="randomize">Randomize</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="row">
+    <div class="col-12@sm">
+      <div id="my-shuffle" class="items shuffle" style="position: relative; overflow: hidden; height: 240px; transition: height 250ms ease 0s;">
+        <div class="box shuffle-item shuffle-item--visible" data-reviews="45" style="position: absolute; top: 0px; visibility: visible; will-change: transform; left: 0px; opacity: 1; transition-duration: 250ms; transition-timing-function: ease; transition-property: transform, opacity; transform: translate(0px) scale(0.001);"></div>
+        <div class="box h2 w2 shuffle-item shuffle-item--visible" data-reviews="19" style="position: absolute; top: 0px; visibility: visible; will-change: transform; left: 0px; opacity: 1; transform: translate(231px) scale(1); transition-duration: 250ms; transition-timing-function: ease; transition-property: transform, opacity;"></div>
+        <div class="box shuffle-item shuffle-item--visible" data-reviews="66" style="position: absolute; top: 0px; visibility: visible; will-change: transform; left: 0px; opacity: 1; transform: translate(692px) scale(1); transition-duration: 250ms; transition-timing-function: ease; transition-property: transform, opacity;"></div>
+        <div class="box shuffle-item shuffle-item--visible" data-reviews="148" style="position: absolute; top: 0px; visibility: visible; will-change: transform; left: 0px; opacity: 1; transform: translate(923px) scale(1); transition-duration: 250ms; transition-timing-function: ease; transition-property: transform, opacity;"></div>
+        <div class="box w2 shuffle-item shuffle-item--visible" data-reviews="99" style="position: absolute; top: 0px; visibility: visible; will-change: transform; left: 0px; opacity: 1; transform: translate(692px, 120px) scale(1); transition-duration: 250ms; transition-timing-function: ease; transition-property: transform, opacity;"></div>
+        <div class="box shuffle-item shuffle-item--visible" data-reviews="3" style="position: absolute; top: 0px; visibility: visible; will-change: transform; left: 0px; opacity: 1; transform: translate(0px, 120px) scale(1); transition-duration: 250ms; transition-timing-function: ease; transition-property: transform, opacity;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+</main>
+<footer class="site-footer light-text-dark-box">
+    <div class="container">
+      <div class="row">
+        <nav class="col-6@xs visible@xs">
+          <ul class="unstyled">
+            <li><a href="https://vestride.github.io/Shuffle/faq">FAQ</a></li>
+            <li><a href="https://github.com/Vestride/Shuffle">View Shuffle on GitHub</a></li>
+          </ul>
+        </nav>
+        <div class="col-6@xs col-12@sm">
+          
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+<script crossorigin="anonymous" src="shufflebase_files/polyfill.js"></script>
+<!-- Syntax highlighting via Prism -->
+<script src="shufflebase_files/prism.js"></script>
+<!-- Shuffle! -->
+<script src="shufflebase_files/shuffle.js"></script>
+
+<script src="shufflebase_files/site-nav.js"></script>
+
+
+
+
+
+<script src="shufflebase_files/adding-removing.js"></script>
+
+
+
+
+
+
+
+
+</body></html>
