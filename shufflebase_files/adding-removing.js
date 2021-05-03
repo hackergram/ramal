@@ -104,7 +104,7 @@ Demo.prototype.onAppendBoxes = function () {
   elements.forEach(function (element) {
     this.shuffle.element.appendChild(element);
   }, this);
-
+	console.log(elements)
   // Tell shuffle items have been appended.
   // It expects an array of elements as the parameter.
   this.shuffle.add(elements);
@@ -123,7 +123,7 @@ Demo.prototype.onPrependBoxes = function () {
 
   // Get the first 5 children of the container (we are inserting 5 items).
   var items = Array.prototype.slice.call(this.element.children, 0, 5);
-
+	console.log(items)
   // Notify the instance.
   this.shuffle.add(items);
 };
