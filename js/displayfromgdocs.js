@@ -16,23 +16,21 @@ function getDict(entry){
 			return dict
 		}
 		
-function addVideoRows(team,rowmax=3){
-	team.forEach(function(d){
-		rowmax=Math.min(rowmax,team.length)
+function addVideoRows(video,rowmax=3){
+	video.forEach(function(d){
+		rowmax=Math.min(rowmax,video.length)
+		console.log(d)
 		d3.select("#vidrow").append("section").attr("class", "col mb4")
 			.html('<div class="card">\
-      <img src="..." class="card-img-top" alt="...">\
-      <div class="card-body">\
-        <h5 class="card-title">Card title</h5>\
-        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>\
-      </div>\
-    </div>\
-     <iframe width="420" height="315"\
-src="https://www.youtube.com/embed/orLPJiHVGZQ?autoplay=1&mute=1">\
-</iframe>\ ');
+					<div class="card-body">\
+						<h5 class="card-title">'+d['id']+'</h5>\
+						<h6>'+d['displaylang']+'</h6>\
+						<p class="card-text">'+d['text']+'</p>\
+						<iframe width=100% height="300" src="'+d['embed']+'"></iframe>\
+					</div>\
+					</div>');
 	})
 }
-
 	
 function displayVideos(servurl=null){
 	if (servurl!=null){
