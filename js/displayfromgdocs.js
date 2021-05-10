@@ -44,3 +44,34 @@ function displayVideos(servurl=null){
 		});
 	}
 }
+
+
+function addDocRows(doc,rowmax=3){
+	doc.forEach(function(d){
+		rowmax=Math.min(rowmax,doc.length)
+		console.log(d)
+		d3.select("#vidrow").append("section").attr("class", "col mb4")
+			.html('<div class="card">\
+					<div class="card-body">\
+						<a href="'+d['where']+'" target="_blank">\
+						<h5 class="card-title">'+d['id']+'</h5>\
+						<h6>'+d['displaylang']+'</h6>\
+						<p class="card-text">'+d['text']+'</p></a>\
+						<iframe width=100% height="300" src="'+d['embed']+'"></iframe>\
+					</div>\
+					</div>');
+	})
+}
+	
+function displayDocs(servurl=null){
+	if (servurl!=null){
+		//console.log(servurl)
+		$.getJSON(servurl,function(data){
+			entry=data.feed.entry
+			docs=getDict(entry)
+			console.log(docs)
+			addDocRows(docs)
+			//this.shuffle.add(services)
+		});
+	}
+}
